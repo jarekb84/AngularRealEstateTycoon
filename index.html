@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+  <head>    
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <script src="http://code.angularjs.org/1.1.5/angular.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script src="http:netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
+  </head>
+
+<body ng-app="myApp" ng-controller="MainCtrl">
+    <div class="container">
+        <span>Cash:</span> {{character.cash | currency}}
+        <span>Net Worth:</span> {{character.netWorth()| currency}}
+        <button class="btn" ng-click="start(houses, character, settings)">Start</button>
+        <button class="btn" ng-click="stop()">Stop</button>
+        <button class="btn" ng-model="newHouse" ng-click="buildHouse(houses, character)" ng-disabled="exceedCashCheck(newHouse.value, character.cash)">Build house</button>
+
+    <div>
+        <div class="well">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Totals</th>
+                    <th>{{character.properties| currency}}</th>
+                    <th>{{character.properties * .01| currency}}</th>
+                    <th>4123</th>
+                </tr>
+                <tr>
+                    <th>#</th>
+                    <th>Value</th>
+                    <th>Rent</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody  ng-repeat="house in houses">
+                <tr>
+                    <td rowspan="2">{{house.id}}</td>
+                    <td>{{house.value | currency}}</td>
+                    <td>{{house.rent() | currency}}</td>
+                    <td>
+                        <button class="btn btn-success" ng-disabled="house.owned || exceedCashCheck(house.value, character.cash)" ng-click="buyHouse(house, character)">Buy</button>
+                        <button class="btn btn-danger" ng-disabled="!house.owned" ng-click="sellHouse(house, character)">Sell</button>
+                        <button class="btn" ng-disabled="!house.owned || exceedCashCheck(house.upgradeCost(), character.cash)" ng-click="buyUpgrade(house, character, settings)">Upgrade for {{ house.upgradeCost() | currency }}</button>
+
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
